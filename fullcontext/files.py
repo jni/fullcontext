@@ -4,7 +4,20 @@ import tempfile
 from contextlib import contextmanager
 
 
-def _local_file(path: str = None) ->
+@contextmanager
+def temporary_file(suffix=''):
+    """Yield a writeable temporary filename that is deleted on context exit.
+
+    Parameters
+    ----------
+    suffix : string, optional
+        The suffix for the file.
+    """
+    tempfile_stream = tempfile.NamedTemporaryFile(suffix=suffix, delete=False)
+    tempfile = tempfile_stream.name
+    tempfile_stream.close()
+    yield tempfile
+    os.remove(tempfile)
 
 
 @contextmanager
